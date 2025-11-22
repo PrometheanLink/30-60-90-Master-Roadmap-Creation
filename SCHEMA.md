@@ -59,6 +59,149 @@ CREATE TABLE wp_project_journey_signatures (
 **Accessed by:**
 - `pj_save_signature_handler()` - Insert signatures
 
+### Table: `wp_project_journey_task_notes`
+Project journal with full revision history
+
+```sql
+CREATE TABLE wp_project_journey_task_notes (
+    id bigint(20) NOT NULL AUTO_INCREMENT,
+    project_id int(11) NOT NULL DEFAULT 1,
+    task_id varchar(100) NOT NULL,
+    note_text longtext NOT NULL,
+    change_reason text DEFAULT NULL,
+    revision_number int(11) NOT NULL DEFAULT 1,
+    created_by bigint(20) NOT NULL,
+    created_by_name varchar(255) NOT NULL,
+    created_at datetime DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (id),
+    KEY task_index (task_id),
+    KEY project_task_index (project_id, task_id),
+    KEY created_by_index (created_by)
+)
+```
+
+**Accessed by:**
+- `pj_save_task_note_handler()` - Insert new revision
+- `pj_get_task_notes()` - Get all revisions for task
+- `pj_get_latest_task_note()` - Get current note
+
+### Table: `wp_project_journey_task_attachments`
+File attachments for tasks
+
+```sql
+CREATE TABLE wp_project_journey_task_attachments (
+    id bigint(20) NOT NULL AUTO_INCREMENT,
+    note_id bigint(20) DEFAULT NULL,
+    project_id int(11) NOT NULL DEFAULT 1,
+    task_id varchar(100) NOT NULL,
+    file_name varchar(255) NOT NULL,
+    file_path varchar(500) NOT NULL,
+    file_type varchar(100) DEFAULT NULL,
+    file_size bigint(20) DEFAULT NULL,
+    uploaded_by bigint(20) NOT NULL,
+    uploaded_by_name varchar(255) NOT NULL,
+    uploaded_at datetime DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (id),
+    KEY note_index (note_id),
+    KEY task_index (task_id),
+    KEY project_task_index (project_id, task_id)
+)
+```
+
+**Accessed by:**
+- `pj_upload_task_attachment_handler()` - Upload file
+- `pj_get_task_attachments()` - Get all attachments for task
+- `pj_delete_task_attachment_handler()` - Delete attachment
+
+### Table: `wp_project_journey_phases`
+**NEW** - Dynamic roadmap phases (admin-editable)
+
+```sql
+CREATE TABLE wp_project_journey_phases (
+    id bigint(20) NOT NULL AUTO_INCREMENT,
+    project_id int(11) NOT NULL DEFAULT 1,
+    phase_key varchar(50) NOT NULL,
+    phase_number int(11) NOT NULL,
+    phase_title varchar(255) NOT NULL,
+    phase_subtitle text,
+    phase_description text,
+    sort_order int(11) DEFAULT 0,
+    is_active tinyint(1) DEFAULT 1,
+    created_at datetime DEFAULT CURRENT_TIMESTAMP,
+    updated_at datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (id),
+    UNIQUE KEY phase_unique (project_id, phase_key),
+    KEY project_phase_index (project_id, phase_number)
+)
+```
+
+**Accessed by:**
+- `pj_get_all_phases()` - Get all phases
+- `pj_get_phase()` - Get single phase
+- `pj_create_phase()` - Create new phase
+- `pj_update_phase()` - Update phase
+- `pj_delete_phase()` - Soft delete phase
+
+### Table: `wp_project_journey_objectives`
+**NEW** - Dynamic roadmap objectives
+
+```sql
+CREATE TABLE wp_project_journey_objectives (
+    id bigint(20) NOT NULL AUTO_INCREMENT,
+    project_id int(11) NOT NULL DEFAULT 1,
+    phase_id bigint(20) NOT NULL,
+    objective_key varchar(50) NOT NULL,
+    objective_title varchar(255) NOT NULL,
+    objective_subtitle text,
+    sort_order int(11) DEFAULT 0,
+    is_active tinyint(1) DEFAULT 1,
+    created_at datetime DEFAULT CURRENT_TIMESTAMP,
+    updated_at datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (id),
+    KEY phase_index (phase_id),
+    KEY project_phase_objective (project_id, phase_id, sort_order)
+)
+```
+
+**Accessed by:**
+- `pj_get_objectives_by_phase()` - Get objectives for phase
+- `pj_get_objective()` - Get single objective
+- `pj_create_objective()` - Create new objective
+- `pj_update_objective()` - Update objective
+- `pj_delete_objective()` - Soft delete objective
+
+### Table: `wp_project_journey_tasks`
+**NEW** - Dynamic roadmap tasks
+
+```sql
+CREATE TABLE wp_project_journey_tasks (
+    id bigint(20) NOT NULL AUTO_INCREMENT,
+    project_id int(11) NOT NULL DEFAULT 1,
+    phase_id bigint(20) NOT NULL,
+    objective_id bigint(20) NOT NULL,
+    task_id varchar(100) NOT NULL,
+    task_text text NOT NULL,
+    task_details text,
+    owner varchar(50),
+    sort_order int(11) DEFAULT 0,
+    is_active tinyint(1) DEFAULT 1,
+    created_at datetime DEFAULT CURRENT_TIMESTAMP,
+    updated_at datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (id),
+    UNIQUE KEY task_unique (project_id, task_id),
+    KEY objective_index (objective_id),
+    KEY project_objective_task (project_id, objective_id, sort_order)
+)
+```
+
+**Accessed by:**
+- `pj_get_tasks_by_objective()` - Get tasks for objective
+- `pj_get_task()` - Get single task by ID
+- `pj_get_task_by_task_id()` - Get task by task_id string
+- `pj_create_task()` - Create new task
+- `pj_update_task()` - Update task
+- `pj_delete_task()` - Soft delete task
+
 ---
 
 ## 2. WORDPRESS OPTIONS (Settings)
@@ -122,6 +265,64 @@ All functions use prefix `pj_`
 - `pj_admin_reports_page()` - PDF generation and reports page
 - `pj_admin_data_page()` - Progress data table view
 
+### Task Notes Functions (`includes/task-notes.php`)
+- `pj_save_task_note_handler()` - AJAX handler to save note
+- `pj_get_task_notes_handler()` - AJAX handler to get notes
+- `pj_get_task_notes($project_id, $task_id)` - Get all notes for task
+- `pj_get_latest_task_note($project_id, $task_id)` - Get latest note
+- `pj_upload_task_attachment_handler()` - AJAX handler for file upload
+- `pj_get_task_attachments_handler()` - AJAX handler to get attachments
+- `pj_get_task_attachments($project_id, $task_id, $note_id)` - Get attachments
+- `pj_delete_task_attachment_handler()` - AJAX handler to delete attachment
+- `pj_send_note_notification()` - Send email when note added
+- `pj_get_task_note_count()` - Count notes for task
+- `pj_get_task_attachment_count()` - Count attachments for task
+
+### Admin Phases Functions (`includes/admin-phases.php`) **NEW**
+**CRUD - Phases:**
+- `pj_get_all_phases($project_id)` - Get all phases
+- `pj_get_phase($phase_id)` - Get single phase
+- `pj_create_phase($data)` - Create new phase
+- `pj_update_phase($phase_id, $data)` - Update phase
+- `pj_delete_phase($phase_id)` - Soft delete phase
+- `pj_hard_delete_phase($phase_id)` - Permanently delete phase
+
+**CRUD - Objectives:**
+- `pj_get_objectives_by_phase($phase_id)` - Get objectives for phase
+- `pj_get_objective($objective_id)` - Get single objective
+- `pj_create_objective($data)` - Create new objective
+- `pj_update_objective($objective_id, $data)` - Update objective
+- `pj_delete_objective($objective_id)` - Soft delete objective
+- `pj_delete_objectives_by_phase($phase_id)` - Delete all objectives in phase
+
+**CRUD - Tasks:**
+- `pj_get_tasks_by_objective($objective_id)` - Get tasks for objective
+- `pj_get_task($task_db_id)` - Get single task by database ID
+- `pj_get_task_by_task_id($task_id, $project_id)` - Get task by task_id string
+- `pj_create_task($data)` - Create new task
+- `pj_update_task($task_db_id, $data)` - Update task
+- `pj_delete_task($task_db_id)` - Soft delete task
+- `pj_delete_tasks_by_objective($objective_id)` - Delete all tasks in objective
+
+**Utility Functions:**
+- `pj_auto_generate_task_id($phase_key, $objective_key, $task_number)` - Generate task_id
+- `pj_reorder_items($table_name, $items_order)` - Reorder items by sort_order
+- `pj_get_full_roadmap($project_id)` - Get complete roadmap structure
+- `pj_export_roadmap_json($project_id)` - Export roadmap as JSON
+- `pj_roadmap_exists($project_id)` - Check if roadmap exists in database
+- `pj_import_hardcoded_roadmap($project_id)` - **Migration** - Import hardcoded roadmap to database
+
+**AJAX Handlers:**
+- `pj_save_phase_handler()` - Save/update phase
+- `pj_delete_phase_handler()` - Delete phase
+- `pj_save_objective_handler()` - Save/update objective
+- `pj_delete_objective_handler()` - Delete objective
+- `pj_save_task_handler()` - Save/update task
+- `pj_delete_task_handler()` - Delete task
+- `pj_reorder_items_handler()` - Reorder items
+- `pj_get_roadmap_handler()` - Get full roadmap
+- `pj_import_roadmap_handler()` - Import hardcoded roadmap
+
 ---
 
 ## 5. WORDPRESS AJAX ACTIONS
@@ -133,8 +334,24 @@ All AJAX actions use prefix `pj_`
 | `pj_save_progress` | `pj_save_progress_handler()` | Logged in + Non-logged in | Save checkbox state |
 | `pj_clear_progress` | `pj_clear_progress_handler()` | Admin only | Clear all progress data |
 | `pj_save_signature` | `pj_save_signature_handler()` | Logged in + Non-logged in | Save signature data |
+| `pj_save_task_note` | `pj_save_task_note_handler()` | Logged in + Non-logged in | Save task note/journal entry |
+| `pj_get_task_notes` | `pj_get_task_notes_handler()` | Logged in + Non-logged in | Get task notes (revision history) |
+| `pj_upload_task_attachment` | `pj_upload_task_attachment_handler()` | Logged in + Non-logged in | Upload file attachment |
+| `pj_get_task_attachments` | `pj_get_task_attachments_handler()` | Logged in + Non-logged in | Get task attachments |
+| `pj_delete_task_attachment` | `pj_delete_task_attachment_handler()` | Admin only | Delete attachment |
+| `pj_save_phase` | `pj_save_phase_handler()` | Admin only | **NEW** - Save/update phase |
+| `pj_delete_phase` | `pj_delete_phase_handler()` | Admin only | **NEW** - Delete phase |
+| `pj_save_objective` | `pj_save_objective_handler()` | Admin only | **NEW** - Save/update objective |
+| `pj_delete_objective` | `pj_delete_objective_handler()` | Admin only | **NEW** - Delete objective |
+| `pj_save_task` | `pj_save_task_handler()` | Admin only | **NEW** - Save/update task |
+| `pj_delete_task` | `pj_delete_task_handler()` | Admin only | **NEW** - Delete task |
+| `pj_reorder_items` | `pj_reorder_items_handler()` | Admin only | **NEW** - Reorder phases/objectives/tasks |
+| `pj_get_roadmap` | `pj_get_roadmap_handler()` | Admin only | **NEW** - Get full roadmap structure |
+| `pj_import_roadmap` | `pj_import_roadmap_handler()` | Admin only | **NEW** - Import hardcoded roadmap to database |
 
-**Nonce:** `pj_save_progress_nonce` (used for save_progress and save_signature)
+**Nonces:**
+- `pj_save_progress_nonce` - Used for: save_progress, save_signature, task notes, attachments
+- `pj_admin_nonce` - **NEW** - Used for: admin phases CRUD operations
 
 ---
 

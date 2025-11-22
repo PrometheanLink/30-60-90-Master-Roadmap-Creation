@@ -7,10 +7,28 @@ $project_id = isset($atts['project_id']) ? intval($atts['project_id']) : 1;
 $editable = isset($atts['editable']) && $atts['editable'] === 'false' ? false : true;
 $progress = pj_get_user_progress($user_id, $project_id);
 
-// Get settings
+// Get settings from options
 $logo_url = get_option('pj_logo_url', '');
 $client_name = get_option('pj_client_name', 'Kim Benedict - Sojourn Coaching');
 $consultant_name = get_option('pj_consultant_name', 'PrometheanLink (Walter)');
+
+// Get project metadata (roadmap title, subtitle, purpose points, etc.)
+$roadmap_title = pj_get_project_meta($project_id, 'roadmap_title', '30/60/90 Project Roadmap');
+$roadmap_subtitle = pj_get_project_meta($project_id, 'roadmap_subtitle', 'Moving Sojourn Coaching from idea and uncertainty into a confident, operational, and client-ready coaching practice');
+$purpose_intro = pj_get_project_meta($project_id, 'purpose_intro', 'By the end of 90 days, you will have:');
+$purpose_points = pj_get_project_meta($project_id, 'purpose_points', array(
+    'A clear client journey and offers',
+    'A professional website and booking system',
+    'An intake and onboarding flow',
+    'Simple funnels and email automations',
+    'A growing library of content and video assets',
+    'A sustainable communication rhythm between Client and Consultant'
+));
+$timeline_intro = pj_get_project_meta($project_id, 'timeline_intro', 'The project unfolds in strategic phases');
+$show_timeline = pj_get_project_meta($project_id, 'show_timeline_visual', 'yes');
+
+// Get all phases from database for dynamic timeline
+$all_phases = pj_get_all_phases($project_id);
 ?>
 
 <div class="wormhole-roadmap" data-project-id="<?php echo esc_attr($project_id); ?>">
@@ -24,21 +42,21 @@ $consultant_name = get_option('pj_consultant_name', 'PrometheanLink (Walter)');
 
     <div class="hero">
         <div class="container">
-            <h1>30/60/90 Project Roadmap</h1>
-            <p class="subtitle">Moving Sojourn Coaching from idea and uncertainty into a confident, operational, and client-ready coaching practice</p>
+            <h1><?php echo esc_html($roadmap_title); ?></h1>
+            <p class="subtitle"><?php echo esc_html($roadmap_subtitle); ?></p>
         </div>
     </div>
 
     <section>
         <div class="container content-width">
             <h2>Project Purpose</h2>
+            <?php if (!empty($purpose_intro)): ?>
+                <p><?php echo esc_html($purpose_intro); ?></p>
+            <?php endif; ?>
             <ul class="purpose-list">
-                <li>A clear client journey and offers</li>
-                <li>A professional website and booking system</li>
-                <li>An intake and onboarding flow</li>
-                <li>Simple funnels and email automations</li>
-                <li>A growing library of content and video assets</li>
-                <li>A sustainable communication rhythm between Client and Consultant</li>
+                <?php foreach ($purpose_points as $point): ?>
+                    <li><?php echo esc_html($point); ?></li>
+                <?php endforeach; ?>
             </ul>
         </div>
     </section>
@@ -59,28 +77,27 @@ $consultant_name = get_option('pj_consultant_name', 'PrometheanLink (Walter)');
         </div>
     </section>
 
+    <?php if ($show_timeline === 'yes' && !empty($all_phases)): ?>
     <section>
         <div class="container content-width">
             <h2>Project Timeline</h2>
+            <?php if (!empty($timeline_intro)): ?>
+                <p class="timeline-intro"><?php echo esc_html($timeline_intro); ?></p>
+            <?php endif; ?>
             <div class="phase-timeline">
-                <div class="phase-marker phase-1">
-                    <div class="phase-circle">30</div>
-                    <div class="phase-label">Phase 1</div>
-                    <p class="phase-subtitle">Discovery, Foundations<br>& Communication</p>
-                </div>
-                <div class="phase-marker phase-2">
-                    <div class="phase-circle">60</div>
-                    <div class="phase-label">Phase 2</div>
-                    <p class="phase-subtitle">Website Build, Booking,<br>Funnel & AI Support</p>
-                </div>
-                <div class="phase-marker phase-3">
-                    <div class="phase-circle">90</div>
-                    <div class="phase-label">Phase 3</div>
-                    <p class="phase-subtitle">Refinement, Launch<br>& Momentum</p>
-                </div>
+                <?php foreach ($all_phases as $phase): ?>
+                    <div class="phase-marker phase-<?php echo esc_attr($phase['phase_number']); ?>">
+                        <div class="phase-circle"><?php echo esc_html($phase['phase_number'] * 30); ?></div>
+                        <div class="phase-label"><?php echo esc_html($phase['phase_title']); ?></div>
+                        <?php if (!empty($phase['phase_subtitle'])): ?>
+                            <p class="phase-subtitle"><?php echo nl2br(esc_html($phase['phase_subtitle'])); ?></p>
+                        <?php endif; ?>
+                    </div>
+                <?php endforeach; ?>
             </div>
         </div>
     </section>
+    <?php endif; ?>
 
     <!-- PHASE 1 -->
     <section class="phase-1-bg">

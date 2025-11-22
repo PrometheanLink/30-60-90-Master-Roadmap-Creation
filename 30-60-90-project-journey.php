@@ -19,6 +19,9 @@ include_once PJ_PLUGIN_DIR . 'includes/form-handler.php';
 include_once PJ_PLUGIN_DIR . 'includes/pdf-generator.php';
 include_once PJ_PLUGIN_DIR . 'includes/admin-page.php';
 include_once PJ_PLUGIN_DIR . 'includes/task-notes.php';
+include_once PJ_PLUGIN_DIR . 'includes/admin-phases.php';
+include_once PJ_PLUGIN_DIR . 'includes/project-metadata.php';
+include_once PJ_PLUGIN_DIR . 'includes/admin-project-settings.php';
 
 /**
  * Activation hook to create database tables
@@ -101,11 +104,87 @@ function pj_create_tables() {
         KEY project_task_index (project_id, task_id)
     ) $charset_collate;";
 
+    // Table for dynamic phases (admin-editable roadmap structure)
+    $phases_table = $wpdb->prefix . 'project_journey_phases';
+    $phases_sql = "CREATE TABLE IF NOT EXISTS $phases_table (
+        id bigint(20) NOT NULL AUTO_INCREMENT,
+        project_id int(11) NOT NULL DEFAULT 1,
+        phase_key varchar(50) NOT NULL,
+        phase_number int(11) NOT NULL,
+        phase_title varchar(255) NOT NULL,
+        phase_subtitle text,
+        phase_description text,
+        sort_order int(11) DEFAULT 0,
+        is_active tinyint(1) DEFAULT 1,
+        created_at datetime DEFAULT CURRENT_TIMESTAMP,
+        updated_at datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+        PRIMARY KEY (id),
+        UNIQUE KEY phase_unique (project_id, phase_key),
+        KEY project_phase_index (project_id, phase_number)
+    ) $charset_collate;";
+
+    // Table for dynamic objectives
+    $objectives_table = $wpdb->prefix . 'project_journey_objectives';
+    $objectives_sql = "CREATE TABLE IF NOT EXISTS $objectives_table (
+        id bigint(20) NOT NULL AUTO_INCREMENT,
+        project_id int(11) NOT NULL DEFAULT 1,
+        phase_id bigint(20) NOT NULL,
+        objective_key varchar(50) NOT NULL,
+        objective_title varchar(255) NOT NULL,
+        objective_subtitle text,
+        sort_order int(11) DEFAULT 0,
+        is_active tinyint(1) DEFAULT 1,
+        created_at datetime DEFAULT CURRENT_TIMESTAMP,
+        updated_at datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+        PRIMARY KEY (id),
+        KEY phase_index (phase_id),
+        KEY project_phase_objective (project_id, phase_id, sort_order)
+    ) $charset_collate;";
+
+    // Table for dynamic tasks
+    $tasks_table = $wpdb->prefix . 'project_journey_tasks';
+    $tasks_sql = "CREATE TABLE IF NOT EXISTS $tasks_table (
+        id bigint(20) NOT NULL AUTO_INCREMENT,
+        project_id int(11) NOT NULL DEFAULT 1,
+        phase_id bigint(20) NOT NULL,
+        objective_id bigint(20) NOT NULL,
+        task_id varchar(100) NOT NULL,
+        task_text text NOT NULL,
+        task_details text,
+        owner varchar(50),
+        sort_order int(11) DEFAULT 0,
+        is_active tinyint(1) DEFAULT 1,
+        created_at datetime DEFAULT CURRENT_TIMESTAMP,
+        updated_at datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+        PRIMARY KEY (id),
+        UNIQUE KEY task_unique (project_id, task_id),
+        KEY objective_index (objective_id),
+        KEY project_objective_task (project_id, objective_id, sort_order)
+    ) $charset_collate;";
+
+    // Table for project metadata (roadmap title, subtitle, purpose points, etc.)
+    $metadata_table = $wpdb->prefix . 'project_journey_metadata';
+    $metadata_sql = "CREATE TABLE IF NOT EXISTS $metadata_table (
+        id bigint(20) NOT NULL AUTO_INCREMENT,
+        project_id int(11) NOT NULL DEFAULT 1,
+        meta_key varchar(100) NOT NULL,
+        meta_value longtext NOT NULL,
+        created_at datetime DEFAULT CURRENT_TIMESTAMP,
+        updated_at datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+        PRIMARY KEY (id),
+        UNIQUE KEY project_meta_unique (project_id, meta_key),
+        KEY project_index (project_id)
+    ) $charset_collate;";
+
     require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
     dbDelta($progress_sql);
     dbDelta($signatures_sql);
     dbDelta($notes_sql);
     dbDelta($attachments_sql);
+    dbDelta($phases_sql);
+    dbDelta($objectives_sql);
+    dbDelta($tasks_sql);
+    dbDelta($metadata_sql);
 
     // Set default options
     if (get_option('pj_client_name') === false) {
@@ -158,6 +237,19 @@ function pj_admin_enqueue_assets($hook) {
     if (strpos($hook, 'project-journey') !== false) {
         wp_enqueue_style('pj-admin-styles', PJ_PLUGIN_URL . 'assets/admin-style.css', array(), PJ_VERSION);
         wp_enqueue_script('pj-admin-scripts', PJ_PLUGIN_URL . 'assets/admin-script.js', array('jquery'), PJ_VERSION, true);
+
+        // Load phases management assets on phases page
+        if ($hook === 'project-journey_page_project-journey-phases') {
+            wp_enqueue_style('pj-admin-phases-styles', PJ_PLUGIN_URL . 'assets/admin-phases.css', array(), PJ_VERSION);
+            wp_enqueue_script('jquery-ui-sortable');
+            wp_enqueue_script('pj-admin-phases-scripts', PJ_PLUGIN_URL . 'assets/admin-phases.js', array('jquery', 'jquery-ui-sortable'), PJ_VERSION, true);
+
+            // Localize script for AJAX
+            wp_localize_script('pj-admin-phases-scripts', 'pjPhasesAjax', array(
+                'ajaxurl' => admin_url('admin-ajax.php'),
+                'nonce' => wp_create_nonce('pj_admin_nonce')
+            ));
+        }
     }
 }
 
@@ -189,6 +281,15 @@ function pj_add_admin_menu() {
         'pj_admin_main_page',
         'dashicons-calendar-alt',
         65
+    );
+
+    add_submenu_page(
+        'project-journey',
+        'Project Phases',
+        'Project Phases',
+        'manage_options',
+        'project-journey-phases',
+        'pj_admin_phases_page'
     );
 
     add_submenu_page(

@@ -1,0 +1,271 @@
+/**
+ * Admin Project Settings Page Styles
+ * For 30/60/90 Project Journey Plugin
+ */
+
+/* ===== Container & Layout ===== */
+.pj-project-settings {
+    max-width: 1200px;
+    margin: 20px auto;
+}
+
+.pj-settings-header {
+    background: #fff;
+    padding: 20px;
+    margin-bottom: 20px;
+    border: 1px solid #ccd0d4;
+    box-shadow: 0 1px 1px rgba(0,0,0,.04);
+}
+
+.pj-settings-header .description {
+    margin: 0 0 15px;
+    color: #646970;
+}
+
+/* ===== Settings Sections ===== */
+.pj-settings-section {
+    background: #fff;
+    padding: 20px;
+    margin-bottom: 20px;
+    border: 1px solid #c3c4c7;
+    box-shadow: 0 1px 1px rgba(0,0,0,.04);
+}
+
+.pj-settings-section h2 {
+    margin-top: 0;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #dcdcde;
+    color: #1d2327;
+}
+
+.pj-settings-section > .description {
+    margin: 10px 0 15px;
+    color: #646970;
+}
+
+/* ===== Form Table Styles ===== */
+.pj-project-settings .form-table th {
+    width: 200px;
+    padding: 15px 10px 15px 0;
+}
+
+.pj-project-settings .form-table td {
+    padding: 15px 10px;
+}
+
+.pj-project-settings .form-table input[type="text"],
+.pj-project-settings .form-table textarea {
+    width: 100%;
+    max-width: 600px;
+}
+
+/* ===== Purpose Points Repeater ===== */
+#pj-purpose-points-container {
+    margin-bottom: 10px;
+}
+
+.pj-purpose-point-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+    padding: 10px;
+    background: #f6f7f7;
+    border: 1px solid #dcdcde;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.pj-purpose-point-row:hover {
+    background: #fff;
+    border-color: #c3c4c7;
+}
+
+.pj-purpose-point-row.ui-sortable-helper {
+    opacity: 0.8;
+    box-shadow: 0 4px 12px rgba(0,0,0,.25);
+    background: #fff;
+}
+
+.pj-drag-handle {
+    cursor: grab;
+    color: #8c8f94;
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+}
+
+.pj-drag-handle:active {
+    cursor: grabbing;
+}
+
+.pj-purpose-point-row input[type="text"] {
+    flex: 1;
+    max-width: none !important;
+}
+
+.pj-remove-point {
+    flex-shrink: 0;
+    color: #d63638 !important;
+    border-color: #d63638 !important;
+    padding: 4px 8px !important;
+    height: auto !important;
+    min-height: 0 !important;
+    line-height: 1 !important;
+}
+
+.pj-remove-point:hover {
+    background: #d63638 !important;
+    color: #fff !important;
+}
+
+.pj-remove-point .dashicons {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+}
+
+#pj-add-purpose-point {
+    margin-top: 5px;
+}
+
+#pj-add-purpose-point .dashicons {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+    margin-right: 5px;
+    vertical-align: middle;
+}
+
+/* ===== Submit Button ===== */
+.pj-project-settings .submit {
+    background: #fff;
+    padding: 20px;
+    margin: 20px 0 0;
+    border: 1px solid #c3c4c7;
+    box-shadow: 0 1px 1px rgba(0,0,0,.04);
+}
+
+#pj-save-settings {
+    padding: 10px 30px;
+    height: auto;
+    font-size: 14px;
+}
+
+.pj-save-status {
+    margin-left: 15px;
+    font-weight: 500;
+    vertical-align: middle;
+}
+
+.pj-save-status.success {
+    color: #00a32a;
+}
+
+.pj-save-status.error {
+    color: #d63638;
+}
+
+.pj-save-status .dashicons {
+    vertical-align: middle;
+    margin-right: 5px;
+}
+
+/* ===== Loading Overlay ===== */
+#pj-loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 999999;
+}
+
+.pj-spinner {
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #2271b1;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* ===== Sortable Placeholder ===== */
+.ui-sortable-placeholder {
+    background: #f0f6fc;
+    border: 2px dashed #2271b1 !important;
+    visibility: visible !important;
+    height: 50px !important;
+    margin-bottom: 10px;
+}
+
+/* ===== Responsive ===== */
+@media screen and (max-width: 782px) {
+    .pj-project-settings .form-table th,
+    .pj-project-settings .form-table td {
+        display: block;
+        width: 100%;
+        padding: 10px 0;
+    }
+
+    .pj-project-settings .form-table th {
+        padding-bottom: 5px;
+    }
+
+    .pj-purpose-point-row {
+        flex-wrap: wrap;
+    }
+
+    .pj-drag-handle {
+        order: -1;
+        margin-right: 10px;
+    }
+
+    .pj-purpose-point-row input[type="text"] {
+        width: 100%;
+        order: 2;
+        flex-basis: 100%;
+    }
+
+    .pj-remove-point {
+        order: 1;
+        margin-left: auto;
+    }
+}
+
+/* ===== Animations ===== */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.pj-purpose-point-row {
+    animation: fadeIn 0.3s ease;
+}
+
+/* ===== WordPress Admin Compatibility ===== */
+.pj-project-settings .button-large {
+    padding: 10px 30px !important;
+    height: auto !important;
+    line-height: 1.4 !important;
+}
+
+.pj-project-settings .notice {
+    margin: 0 0 15px;
+}

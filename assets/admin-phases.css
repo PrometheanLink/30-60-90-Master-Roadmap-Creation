@@ -1,0 +1,487 @@
+/**
+ * Admin Phases Management Styles
+ * For 30/60/90 Project Journey Plugin
+ */
+
+/* ===== Container & Layout ===== */
+.pj-phases-admin {
+    max-width: 1400px;
+    margin: 20px auto;
+}
+
+.pj-admin-header {
+    background: #fff;
+    padding: 20px;
+    margin-bottom: 20px;
+    border: 1px solid #ccd0d4;
+    box-shadow: 0 1px 1px rgba(0,0,0,.04);
+}
+
+.pj-admin-header .description {
+    margin: 0 0 15px;
+    color: #646970;
+}
+
+.pj-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+/* ===== Phase Cards ===== */
+.pj-phases-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.pj-phase-card {
+    background: #fff;
+    border: 1px solid #c3c4c7;
+    border-left: 4px solid #2271b1;
+    box-shadow: 0 1px 3px rgba(0,0,0,.1);
+    transition: all 0.3s ease;
+}
+
+.pj-phase-card:hover {
+    box-shadow: 0 2px 6px rgba(0,0,0,.15);
+}
+
+.pj-phase-card.collapsed .pj-phase-content {
+    display: none;
+}
+
+.pj-phase-card.collapsed .pj-toggle-phase .dashicons {
+    transform: rotate(-90deg);
+}
+
+/* ===== Phase Header ===== */
+.pj-phase-header {
+    display: flex;
+    align-items: flex-start;
+    padding: 15px 20px;
+    background: #f6f7f7;
+    border-bottom: 1px solid #c3c4c7;
+    cursor: pointer;
+}
+
+.pj-phase-header:hover {
+    background: #f0f0f1;
+}
+
+.pj-drag-handle {
+    cursor: grab;
+    color: #8c8f94;
+    margin-right: 10px;
+    margin-top: 5px;
+    font-size: 18px;
+}
+
+.pj-drag-handle:active {
+    cursor: grabbing;
+}
+
+.pj-phase-title-area {
+    flex: 1;
+    margin-right: 15px;
+}
+
+.pj-phase-title {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 600;
+    color: #1d2327;
+    padding: 2px 4px;
+    border-radius: 3px;
+}
+
+.pj-phase-title[contenteditable="true"] {
+    background: #fff;
+    border: 2px solid #2271b1;
+    outline: none;
+}
+
+.pj-phase-subtitle {
+    margin: 5px 0 0;
+    font-size: 14px;
+    color: #646970;
+    padding: 2px 4px;
+    border-radius: 3px;
+}
+
+.pj-phase-subtitle[contenteditable="true"] {
+    background: #fff;
+    border: 2px solid #2271b1;
+    outline: none;
+}
+
+.pj-phase-actions {
+    display: flex;
+    gap: 5px;
+}
+
+/* ===== Phase Content ===== */
+.pj-phase-content {
+    padding: 20px;
+}
+
+.pj-phase-description {
+    margin-bottom: 15px;
+    padding: 10px;
+    background: #f6f7f7;
+    border-radius: 4px;
+    color: #50575e;
+    font-size: 14px;
+    min-height: 40px;
+}
+
+.pj-phase-description[contenteditable="true"] {
+    background: #fff;
+    border: 2px solid #2271b1;
+    outline: none;
+}
+
+/* ===== Objectives ===== */
+.pj-objectives-container {
+    margin-top: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.pj-objective-card {
+    background: #f9f9f9;
+    border: 1px solid #dcdcde;
+    border-left: 3px solid #00a32a;
+    padding: 15px;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.pj-objective-card:hover {
+    background: #fff;
+    box-shadow: 0 1px 3px rgba(0,0,0,.1);
+}
+
+.pj-objective-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.pj-objective-title {
+    flex: 1;
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+    color: #1d2327;
+    padding: 2px 4px;
+    border-radius: 3px;
+}
+
+.pj-objective-title[contenteditable="true"] {
+    background: #fff;
+    border: 2px solid #00a32a;
+    outline: none;
+}
+
+.pj-objective-subtitle {
+    margin: 0 0 10px;
+    font-size: 13px;
+    color: #646970;
+    padding: 2px 4px;
+    border-radius: 3px;
+}
+
+.pj-objective-subtitle[contenteditable="true"] {
+    background: #fff;
+    border: 2px solid #00a32a;
+    outline: none;
+}
+
+.pj-objective-actions {
+    display: flex;
+    gap: 5px;
+}
+
+/* ===== Tasks ===== */
+.pj-tasks-container {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.pj-task-item {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    background: #fff;
+    border: 1px solid #dcdcde;
+    border-radius: 3px;
+    transition: all 0.2s ease;
+}
+
+.pj-task-item:hover {
+    background: #f6f7f7;
+    border-color: #c3c4c7;
+}
+
+.pj-task-content {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.pj-task-id {
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    font-weight: 600;
+    color: #2271b1;
+    background: #f0f6fc;
+    padding: 3px 8px;
+    border-radius: 3px;
+    min-width: 90px;
+    text-align: center;
+}
+
+.pj-task-text {
+    flex: 1;
+    color: #1d2327;
+    padding: 2px 4px;
+    border-radius: 3px;
+}
+
+.pj-task-text[contenteditable="true"] {
+    background: #fff;
+    border: 2px solid #2271b1;
+    outline: none;
+}
+
+.pj-task-owner {
+    font-size: 13px;
+    color: #646970;
+    font-style: italic;
+    padding: 2px 4px;
+    border-radius: 3px;
+}
+
+.pj-task-owner[contenteditable="true"] {
+    background: #fff;
+    border: 2px solid #2271b1;
+    outline: none;
+}
+
+.pj-task-actions {
+    display: flex;
+    gap: 5px;
+}
+
+/* ===== Buttons ===== */
+.pj-add-objective,
+.pj-add-task {
+    margin-top: 10px;
+    font-size: 13px;
+}
+
+.button-small {
+    padding: 4px 8px !important;
+    height: auto !important;
+    min-height: 0 !important;
+    line-height: 1 !important;
+}
+
+.button-small .dashicons {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+}
+
+.pj-edit-phase,
+.pj-edit-objective,
+.pj-edit-task {
+    color: #2271b1 !important;
+    border-color: #2271b1 !important;
+}
+
+.pj-edit-phase:hover,
+.pj-edit-objective:hover,
+.pj-edit-task:hover {
+    background: #2271b1 !important;
+    color: #fff !important;
+}
+
+.pj-delete-phase,
+.pj-delete-objective,
+.pj-delete-task {
+    color: #d63638 !important;
+    border-color: #d63638 !important;
+}
+
+.pj-delete-phase:hover,
+.pj-delete-objective:hover,
+.pj-delete-task:hover {
+    background: #d63638 !important;
+    color: #fff !important;
+}
+
+.pj-toggle-phase {
+    color: #50575e !important;
+    border-color: #8c8f94 !important;
+}
+
+.pj-toggle-phase:hover {
+    background: #f0f0f1 !important;
+}
+
+.pj-toggle-phase .dashicons {
+    transition: transform 0.3s ease;
+}
+
+/* ===== Drag & Drop ===== */
+.ui-sortable-helper {
+    opacity: 0.8;
+    box-shadow: 0 4px 12px rgba(0,0,0,.25);
+}
+
+.ui-sortable-placeholder {
+    background: #f0f6fc;
+    border: 2px dashed #2271b1;
+    visibility: visible !important;
+    margin: 10px 0;
+}
+
+.pj-phase-card.ui-sortable-placeholder {
+    height: 80px;
+}
+
+.pj-objective-card.ui-sortable-placeholder {
+    height: 60px;
+}
+
+.pj-task-item.ui-sortable-placeholder {
+    height: 40px;
+}
+
+/* ===== Loading Overlay ===== */
+#pj-loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 999999;
+}
+
+.pj-spinner {
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #2271b1;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* ===== Notifications ===== */
+.pj-notification {
+    position: fixed;
+    top: 32px;
+    right: 20px;
+    background: #fff;
+    border-left: 4px solid #00a32a;
+    padding: 15px 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,.2);
+    z-index: 999999;
+    min-width: 300px;
+    animation: slideIn 0.3s ease;
+}
+
+.pj-notification.error {
+    border-left-color: #d63638;
+}
+
+.pj-notification.warning {
+    border-left-color: #dba617;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(400px);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* ===== Responsive ===== */
+@media screen and (max-width: 782px) {
+    .pj-phase-header {
+        flex-direction: column;
+    }
+
+    .pj-phase-actions,
+    .pj-objective-actions,
+    .pj-task-actions {
+        margin-top: 10px;
+    }
+
+    .pj-task-content {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+    }
+
+    .pj-actions {
+        flex-direction: column;
+    }
+}
+
+/* ===== Empty States ===== */
+.pj-empty-state {
+    text-align: center;
+    padding: 40px 20px;
+    color: #646970;
+}
+
+.pj-empty-state .dashicons {
+    font-size: 48px;
+    width: 48px;
+    height: 48px;
+    color: #c3c4c7;
+    margin-bottom: 15px;
+}
+
+/* ===== Editing States ===== */
+.pj-editing {
+    position: relative;
+}
+
+.pj-editing::after {
+    content: 'Press Enter to save, Esc to cancel';
+    position: absolute;
+    bottom: 100%;
+    left: -10px;
+    margin-bottom: 5px;
+    font-size: 11px;
+    color: #50575e;
+    font-style: italic;
+    background: #fff;
+    padding: 6px 12px;
+    border-radius: 4px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    border: 1px solid #c3c4c7;
+    white-space: nowrap;
+    z-index: 100;
+}
