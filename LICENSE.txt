@@ -1,0 +1,83 @@
+Proprietary License
+
+30-60-90 Project Journey WordPress Plugin
+Copyright (c) 2025 PrometheanLink LLC
+
+This software and associated documentation files (the "Software") are the
+proprietary property of PrometheanLink LLC.
+
+TERMS OF USE:
+
+1. OWNERSHIP
+   This Software is owned by PrometheanLink LLC and is licensed, not sold,
+   to Kim Benedict / Sojourn Coaching for use as specified below.
+
+2. LICENSE GRANT
+   Subject to the terms of this license, PrometheanLink LLC grants
+   Kim Benedict / Sojourn Coaching a non-exclusive, non-transferable license
+   to use this Software for the Sojourn Coaching project.
+
+3. PERMITTED USE
+   - Installation on Sojourn Coaching WordPress website
+   - Modification for Sojourn Coaching specific needs
+   - Use for tracking 30/60/90 day project roadmap
+   - Generation of project reports and documentation
+
+4. RESTRICTIONS
+   You may NOT:
+   - Redistribute, sell, or lease the Software
+   - Share the Software with third parties
+   - Remove copyright notices or proprietary markings
+   - Use the Software for projects other than Sojourn Coaching without
+     explicit written permission from PrometheanLink LLC
+
+5. MODIFICATIONS
+   You may modify the Software for your internal use. Modified versions
+   remain subject to this license.
+
+6. THIRD-PARTY COMPONENTS
+   This Software uses the following third-party libraries:
+   - mPDF (https://mpdf.github.io/) - Licensed under LGPL v2.1 or later
+   - Google Fonts (Crimson Text, Nunito Sans) - Licensed under SIL Open Font License
+
+7. NO WARRANTY
+   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+
+8. LIMITATION OF LIABILITY
+   IN NO EVENT SHALL PROMETHEANLINK LLC BE LIABLE FOR ANY CLAIM, DAMAGES OR
+   OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+   OTHER DEALINGS IN THE SOFTWARE.
+
+9. SUPPORT AND MAINTENANCE
+   Support and maintenance services may be provided by PrometheanLink LLC
+   under separate agreement.
+
+10. TERMINATION
+    This license is effective until terminated. Your rights under this license
+    will terminate automatically without notice if you fail to comply with any
+    term of this license.
+
+11. GOVERNING LAW
+    This license shall be governed by and construed in accordance with the
+    laws applicable to PrometheanLink LLC's jurisdiction.
+
+For questions regarding this license, contact:
+PrometheanLink LLC
+Email: contact@prometheanlink.com
+
+---
+
+THIRD-PARTY LICENSES:
+
+mPDF Library - LGPL v2.1 or later
+Copyright (c) mPDF Contributors
+https://mpdf.github.io/
+https://github.com/mpdf/mpdf/blob/development/LICENSE.txt
+
+Google Fonts - SIL Open Font License
+https://fonts.google.com/
+Crimson Text: https://fonts.google.com/specimen/Crimson+Text
+Nunito Sans: https://fonts.google.com/specimen/Nunito+Sans

@@ -1,0 +1,924 @@
+:root {
+    --color-black: #000000;
+    --color-dark-slate: #1e262d;
+    --color-grey-800: #333333;
+    --color-grey-700: #4a4a4a;
+    --color-grey-400: #999999;
+    --color-grey-300: #cccccc;
+    --color-grey-200: #e5e5e5;
+    --color-grey-100: #f5f5f5;
+    --color-white: #ffffff;
+    --color-bg: #eeedeb;
+    --color-burnt-orange: #c16107;
+    --color-warm-tan: #c18f5f;
+    --color-golden-amber: #dd9933;
+    --color-success: #95c93d;
+    --color-progress: #4a90e2;
+    --font-heading: 'Crimson Text', serif;
+    --font-body: 'Nunito Sans', sans-serif;
+}
+
+.wormhole-roadmap {
+    width: 100vw !important;
+    max-width: 100vw !important;
+    margin-left: calc(-50vw + 50%) !important;
+    margin-right: calc(-50vw + 50%) !important;
+    padding: 0 !important;
+    font-family: var(--font-body) !important;
+    font-size: 18px !important;
+    line-height: 1.7 !important;
+    color: var(--color-grey-800) !important;
+    background: var(--color-bg) !important;
+    -webkit-font-smoothing: antialiased !important;
+    box-sizing: border-box !important;
+}
+
+.wormhole-roadmap *,
+.wormhole-roadmap *::before,
+.wormhole-roadmap *::after {
+    box-sizing: border-box !important;
+}
+
+.wormhole-roadmap * {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.wormhole-roadmap .container {
+    max-width: 1400px !important;
+    margin: 0 auto !important;
+    padding: 0 4vw !important;
+    width: 100% !important;
+}
+
+.wormhole-roadmap .content-width {
+    max-width: 1000px !important;
+    margin: 0 auto !important;
+}
+
+.wormhole-roadmap .wormhole-logo-header {
+    padding: 60px 0 40px !important;
+    text-align: center !important;
+    background: var(--color-bg) !important;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+.wormhole-roadmap .site-logo {
+    max-width: 280px !important;
+    height: auto !important;
+    display: inline-block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+.wormhole-roadmap .hero {
+    padding: 80px 0 !important;
+    text-align: center !important;
+    background: var(--color-bg) !important;
+}
+
+.wormhole-roadmap .hero h1 {
+    font-family: var(--font-heading) !important;
+    font-size: 56px !important;
+    font-weight: 600 !important;
+    color: var(--color-black) !important;
+    margin-bottom: 24px !important;
+    line-height: 1.2 !important;
+}
+
+.wormhole-roadmap .hero .subtitle {
+    font-size: 22px !important;
+    color: var(--color-grey-700) !important;
+    font-weight: 300 !important;
+    max-width: 800px !important;
+    margin: 0 auto !important;
+}
+
+.wormhole-roadmap section {
+    padding: 100px 0 !important;
+    width: 100% !important;
+}
+
+.wormhole-roadmap section.alt-bg {
+    background: var(--color-grey-100) !important;
+}
+
+.wormhole-roadmap section.phase-1-bg {
+    background: #fff9f5 !important;
+}
+
+.wormhole-roadmap section.phase-2-bg {
+    background: #eeedeb !important;
+}
+
+.wormhole-roadmap section.phase-3-bg {
+    background: #eeedeb !important;
+}
+
+.wormhole-roadmap h2 {
+    font-family: var(--font-heading) !important;
+    font-size: 42px !important;
+    font-weight: 600 !important;
+    color: var(--color-black) !important;
+    margin-bottom: 16px !important;
+    line-height: 1.3 !important;
+}
+
+.wormhole-roadmap h3 {
+    font-family: var(--font-heading) !important;
+    font-size: 32px !important;
+    font-weight: 600 !important;
+    color: var(--color-black) !important;
+    margin-bottom: 16px !important;
+    margin-top: 48px !important;
+    line-height: 1.3 !important;
+}
+
+.wormhole-roadmap h3:first-child {
+    margin-top: 0 !important;
+}
+
+.wormhole-roadmap h4 {
+    font-family: var(--font-heading) !important;
+    font-size: 24px !important;
+    font-weight: 600 !important;
+    color: var(--color-grey-800) !important;
+    margin-bottom: 12px !important;
+    margin-top: 32px !important;
+}
+
+.wormhole-roadmap p {
+    color: var(--color-grey-700) !important;
+    margin-bottom: 20px !important;
+    line-height: 1.7 !important;
+    font-size: 18px !important;
+}
+
+.wormhole-roadmap .section-intro {
+    font-size: 20px !important;
+    color: var(--color-burnt-orange) !important;
+    font-weight: 400 !important;
+    margin-bottom: 40px !important;
+}
+
+/* Roles Section */
+.wormhole-roadmap .roles-container {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 32px !important;
+    margin: 40px 0 !important;
+}
+
+.wormhole-roadmap .role-card {
+    background: var(--color-white) !important;
+    border: 2px solid var(--color-burnt-orange) !important;
+    border-radius: 12px !important;
+    padding: 32px !important;
+    text-align: center !important;
+}
+
+.wormhole-roadmap .role-card h4 {
+    margin-top: 0 !important;
+    color: var(--color-burnt-orange) !important;
+    font-size: 20px !important;
+    font-weight: 600 !important;
+}
+
+.wormhole-roadmap .role-card p {
+    margin-bottom: 0 !important;
+    font-size: 24px !important;
+    font-weight: 600 !important;
+    color: var(--color-grey-800) !important;
+}
+
+/* Phase Timeline */
+.wormhole-roadmap .phase-timeline {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 40px !important;
+    margin: 60px 0 80px !important;
+    position: relative !important;
+}
+
+.wormhole-roadmap .phase-timeline::before {
+    content: '' !important;
+    position: absolute !important;
+    top: 60px !important;
+    left: 16.66% !important;
+    right: 16.66% !important;
+    height: 3px !important;
+    background: linear-gradient(to right, var(--color-burnt-orange), var(--color-progress), var(--color-success)) !important;
+    z-index: 0 !important;
+}
+
+.wormhole-roadmap .phase-marker {
+    text-align: center !important;
+    position: relative !important;
+    z-index: 1 !important;
+}
+
+.wormhole-roadmap .phase-circle {
+    width: 120px !important;
+    height: 120px !important;
+    border-radius: 50% !important;
+    margin: 0 auto 16px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-family: var(--font-heading) !important;
+    font-size: 48px !important;
+    font-weight: 700 !important;
+    color: var(--color-white) !important;
+    border: 5px solid var(--color-white) !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
+}
+
+.wormhole-roadmap .phase-marker.phase-1 .phase-circle {
+    background: var(--color-burnt-orange) !important;
+}
+
+.wormhole-roadmap .phase-marker.phase-2 .phase-circle {
+    background: var(--color-progress) !important;
+}
+
+.wormhole-roadmap .phase-marker.phase-3 .phase-circle {
+    background: var(--color-success) !important;
+}
+
+.wormhole-roadmap .phase-label {
+    font-family: var(--font-heading) !important;
+    font-size: 24px !important;
+    font-weight: 600 !important;
+    color: var(--color-grey-800) !important;
+    margin-bottom: 8px !important;
+}
+
+.wormhole-roadmap .phase-subtitle {
+    font-size: 16px !important;
+    color: var(--color-grey-700) !important;
+}
+
+/* Objective Cards */
+.wormhole-roadmap .objective-card {
+    background: var(--color-white) !important;
+    border: 2px solid var(--color-grey-200) !important;
+    border-radius: 12px !important;
+    padding: 40px !important;
+    margin-bottom: 40px !important;
+}
+
+.wormhole-roadmap .objective-header {
+    display: flex !important;
+    align-items: center !important;
+    margin-bottom: 24px !important;
+}
+
+.wormhole-roadmap .objective-letter {
+    width: 48px !important;
+    height: 48px !important;
+    border-radius: 50% !important;
+    background: var(--color-burnt-orange) !important;
+    color: var(--color-white) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-family: var(--font-heading) !important;
+    font-size: 24px !important;
+    font-weight: 700 !important;
+    margin-right: 16px !important;
+    flex-shrink: 0 !important;
+}
+
+.wormhole-roadmap .objective-title {
+    flex: 1 !important;
+}
+
+.wormhole-roadmap .objective-title h4 {
+    margin: 0 0 4px 0 !important;
+    font-size: 24px !important;
+}
+
+.wormhole-roadmap .objective-subtitle {
+    font-size: 16px !important;
+    color: var(--color-burnt-orange) !important;
+    font-style: italic !important;
+}
+
+/* Checklist */
+.wormhole-roadmap .checklist {
+    list-style: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.wormhole-roadmap .checklist-item {
+    display: flex !important;
+    align-items: flex-start !important;
+    padding: 16px !important;
+    margin-bottom: 12px !important;
+    background: var(--color-grey-100) !important;
+    border-radius: 8px !important;
+    border-left: 4px solid var(--color-grey-300) !important;
+    transition: all 0.2s ease !important;
+}
+
+.wormhole-roadmap .checklist-item:hover {
+    background: #fafafa !important;
+    border-left-color: var(--color-burnt-orange) !important;
+}
+
+.wormhole-roadmap .checkbox {
+    width: 24px !important;
+    height: 24px !important;
+    border: 2px solid var(--color-grey-400) !important;
+    border-radius: 4px !important;
+    margin-right: 16px !important;
+    flex-shrink: 0 !important;
+    position: relative !important;
+    margin-top: 2px !important;
+    background: var(--color-white) !important;
+    transition: all 0.2s ease !important;
+}
+
+.wormhole-roadmap .checkbox.clickable {
+    cursor: pointer !important;
+}
+
+.wormhole-roadmap .checkbox.clickable:hover {
+    border-color: var(--color-burnt-orange) !important;
+    transform: scale(1.1) !important;
+}
+
+.wormhole-roadmap .checklist-item.completed {
+    background: #f0f9e8 !important;
+    border-left-color: var(--color-success) !important;
+}
+
+.wormhole-roadmap .checklist-item.completed .checkbox {
+    background: var(--color-success) !important;
+    border-color: var(--color-success) !important;
+}
+
+.wormhole-roadmap .checklist-item.completed .checkbox::after {
+    content: '✓' !important;
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    color: var(--color-white) !important;
+    font-weight: 700 !important;
+    font-size: 16px !important;
+}
+
+.wormhole-roadmap .checklist-content {
+    flex: 1 !important;
+}
+
+.wormhole-roadmap .checklist-text {
+    color: var(--color-grey-800) !important;
+    margin-bottom: 8px !important;
+    font-size: 17px !important;
+    line-height: 1.5 !important;
+}
+
+.wormhole-roadmap .owner-badge {
+    display: inline-block !important;
+    padding: 4px 12px !important;
+    border-radius: 20px !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    margin-top: 4px !important;
+    margin-right: 8px !important;
+}
+
+.wormhole-roadmap .owner-client {
+    background: #ffe5d9 !important;
+    color: #c16107 !important;
+}
+
+.wormhole-roadmap .owner-consultant {
+    background: #d9e8ff !important;
+    color: #4a90e2 !important;
+}
+
+.wormhole-roadmap .owner-both {
+    background: #e5f5d9 !important;
+    color: #5a8a2d !important;
+}
+
+.wormhole-roadmap .completion-info {
+    margin-top: 8px !important;
+    padding: 8px !important;
+    background: #f0f9e8 !important;
+    border-radius: 4px !important;
+}
+
+.wormhole-roadmap .completion-info small {
+    font-size: 13px !important;
+    color: #5a8a2d !important;
+    font-weight: 500 !important;
+}
+
+/* Goals Section */
+.wormhole-roadmap .goals-grid {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)) !important;
+    gap: 24px !important;
+    margin: 40px 0 !important;
+}
+
+.wormhole-roadmap .goal-item {
+    background: var(--color-white) !important;
+    padding: 24px !important;
+    border-radius: 8px !important;
+    border-left: 4px solid var(--color-burnt-orange) !important;
+}
+
+.wormhole-roadmap .goal-item p {
+    margin-bottom: 0 !important;
+    font-size: 17px !important;
+}
+
+/* Purpose List */
+.wormhole-roadmap .purpose-list {
+    list-style: none !important;
+    margin: 32px 0 !important;
+    padding: 0 !important;
+}
+
+.wormhole-roadmap .purpose-list li {
+    padding: 16px 16px 16px 48px !important;
+    margin-bottom: 12px !important;
+    background: var(--color-white) !important;
+    border-radius: 8px !important;
+    position: relative !important;
+    font-size: 18px !important;
+    color: var(--color-grey-800) !important;
+}
+
+.wormhole-roadmap .purpose-list li::before {
+    content: '→' !important;
+    position: absolute !important;
+    left: 20px !important;
+    color: var(--color-burnt-orange) !important;
+    font-size: 20px !important;
+    font-weight: 700 !important;
+}
+
+/* Summary Box */
+.wormhole-roadmap .summary-box {
+    background: linear-gradient(135deg, var(--color-burnt-orange), var(--color-warm-tan)) !important;
+    color: var(--color-white) !important;
+    padding: 48px !important;
+    border-radius: 12px !important;
+    margin: 60px 0 !important;
+    text-align: center !important;
+}
+
+.wormhole-roadmap .summary-box h3 {
+    color: var(--color-white) !important;
+    margin: 0 0 24px 0 !important;
+    font-size: 36px !important;
+}
+
+.wormhole-roadmap .summary-box p {
+    color: var(--color-white) !important;
+    font-size: 18px !important;
+    line-height: 1.8 !important;
+    max-width: 800px !important;
+    margin: 0 auto !important;
+}
+
+/* Loading spinner */
+.wormhole-roadmap .pj-loading {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+}
+
+.wormhole-roadmap .pj-loading.active {
+    display: block !important;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .wormhole-roadmap .hero h1 {
+        font-size: 40px !important;
+    }
+    .wormhole-roadmap .hero .subtitle {
+        font-size: 18px !important;
+    }
+    .wormhole-roadmap h2 {
+        font-size: 32px !important;
+    }
+    .wormhole-roadmap h3 {
+        font-size: 26px !important;
+    }
+    .wormhole-roadmap section {
+        padding: 60px 0 !important;
+    }
+    .wormhole-roadmap .roles-container {
+        grid-template-columns: 1fr !important;
+    }
+    .wormhole-roadmap .phase-timeline {
+        grid-template-columns: 1fr !important;
+        gap: 40px !important;
+    }
+    .wormhole-roadmap .phase-timeline::before {
+        display: none !important;
+    }
+    .wormhole-roadmap .objective-card {
+        padding: 24px !important;
+    }
+    .wormhole-roadmap .wormhole-logo-header {
+        padding: 40px 0 24px !important;
+    }
+    .wormhole-roadmap .site-logo {
+        max-width: 200px !important;
+    }
+}
+
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400&family=Nunito+Sans:wght@300;400;500;600;700&display=swap');
+
+/* ========================================
+   ACCORDION & JOURNAL FEATURE STYLES
+   ======================================== */
+
+/* Accordion Toggle Button */
+.wormhole-roadmap .accordion-toggle {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    margin-top: 10px !important;
+    padding: 8px 16px !important;
+    background: #10b981 !important;
+    border: 2px solid #10b981 !important;
+    border-radius: 6px !important;
+    font-family: var(--font-sans) !important;
+    font-size: 14px !important;
+    font-weight: 700 !important;
+    color: white !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) !important;
+}
+
+.wormhole-roadmap .accordion-toggle:hover {
+    background: #059669 !important;
+    border-color: #059669 !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3) !important;
+}
+
+.wormhole-roadmap .accordion-toggle .toggle-icon {
+    font-size: 18px !important;
+    font-weight: bold !important;
+    line-height: 1 !important;
+}
+
+.wormhole-roadmap .accordion-toggle[aria-expanded="true"] {
+    background: #dc2626 !important;
+    border-color: #dc2626 !important;
+}
+
+.wormhole-roadmap .accordion-toggle[aria-expanded="true"]:hover {
+    background: #b91c1c !important;
+    border-color: #b91c1c !important;
+}
+
+/* Accordion Content Panel */
+.wormhole-roadmap .accordion-content {
+    margin-top: 16px !important;
+    padding: 0 !important;
+}
+
+.wormhole-roadmap .task-journal-panel {
+    position: relative !important;
+    background: var(--color-off-white) !important;
+    border: 2px solid var(--color-grey-300) !important;
+    border-radius: 8px !important;
+    padding: 24px !important;
+}
+
+/* Accordion Close Button */
+.wormhole-roadmap .accordion-close {
+    position: absolute !important;
+    top: 12px !important;
+    right: 12px !important;
+    width: 36px !important;
+    height: 36px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: #ef4444 !important;
+    border: 2px solid #ef4444 !important;
+    border-radius: 6px !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+    padding: 0 !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) !important;
+}
+
+.wormhole-roadmap .accordion-close:hover {
+    background: #dc2626 !important;
+    border-color: #dc2626 !important;
+    transform: scale(1.1) !important;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3) !important;
+}
+
+.wormhole-roadmap .accordion-close .dashicons {
+    font-size: 20px !important;
+    width: 20px !important;
+    height: 20px !important;
+    color: white !important;
+    transition: transform 0.2s ease !important;
+}
+
+.wormhole-roadmap .accordion-close:hover .dashicons {
+    transform: rotate(90deg) !important;
+}
+
+/* Journal Editor Section */
+.wormhole-roadmap .journal-editor {
+    margin-bottom: 24px !important;
+    padding-bottom: 24px !important;
+    border-bottom: 1px solid var(--color-grey-300) !important;
+}
+
+.wormhole-roadmap .journal-label {
+    display: block !important;
+    font-family: var(--font-sans) !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    color: var(--color-dark) !important;
+    margin-bottom: 8px !important;
+}
+
+.wormhole-roadmap .journal-textarea {
+    width: 100% !important;
+    min-height: 150px !important;
+    padding: 12px 16px !important;
+    font-family: var(--font-sans) !important;
+    font-size: 14px !important;
+    line-height: 1.6 !important;
+    color: var(--color-dark) !important;
+    background: white !important;
+    border: 1px solid var(--color-grey-400) !important;
+    border-radius: 4px !important;
+    resize: vertical !important;
+    margin-bottom: 16px !important;
+    box-sizing: border-box !important;
+}
+
+.wormhole-roadmap .journal-textarea:focus {
+    outline: none !important;
+    border-color: var(--color-primary) !important;
+    box-shadow: 0 0 0 3px rgba(193, 97, 7, 0.1) !important;
+}
+
+.wormhole-roadmap .change-reason-input {
+    width: 100% !important;
+    padding: 10px 16px !important;
+    font-family: var(--font-sans) !important;
+    font-size: 14px !important;
+    color: var(--color-dark) !important;
+    background: white !important;
+    border: 1px solid var(--color-grey-400) !important;
+    border-radius: 4px !important;
+    margin-bottom: 16px !important;
+    box-sizing: border-box !important;
+}
+
+.wormhole-roadmap .change-reason-input:focus {
+    outline: none !important;
+    border-color: var(--color-primary) !important;
+    box-shadow: 0 0 0 3px rgba(193, 97, 7, 0.1) !important;
+}
+
+.wormhole-roadmap .journal-actions {
+    display: flex !important;
+    gap: 12px !important;
+    flex-wrap: wrap !important;
+}
+
+.wormhole-roadmap .button-save-note,
+.wormhole-roadmap .button-attach-file {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    padding: 12px 24px !important;
+    font-family: var(--font-sans) !important;
+    font-size: 15px !important;
+    font-weight: 700 !important;
+    background: #c16107 !important;
+    color: white !important;
+    border: 2px solid #c16107 !important;
+    border-radius: 6px !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) !important;
+}
+
+.wormhole-roadmap .button-save-note:hover,
+.wormhole-roadmap .button-attach-file:hover {
+    background: #a04f05 !important;
+    border-color: #a04f05 !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3) !important;
+}
+
+.wormhole-roadmap .button-save-note:disabled,
+.wormhole-roadmap .button-attach-file:disabled {
+    opacity: 0.6 !important;
+    cursor: not-allowed !important;
+    transform: none !important;
+}
+
+.wormhole-roadmap .button-attach-file {
+    background: #2563eb !important;
+    border-color: #2563eb !important;
+}
+
+.wormhole-roadmap .button-attach-file:hover {
+    background: #1d4ed8 !important;
+    border-color: #1d4ed8 !important;
+}
+
+.wormhole-roadmap .journal-success {
+    display: inline-block !important;
+    margin-left: 12px !important;
+    padding: 8px 16px !important;
+    background: #10b981 !important;
+    color: white !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    border-radius: 4px !important;
+}
+
+/* File Attachments Section */
+.wormhole-roadmap .journal-attachments {
+    margin-bottom: 24px !important;
+    padding-bottom: 24px !important;
+    border-bottom: 1px solid var(--color-grey-300) !important;
+}
+
+.wormhole-roadmap .journal-attachments h5,
+.wormhole-roadmap .journal-history h5 {
+    font-family: var(--font-sans) !important;
+    font-size: 16px !important;
+    font-weight: 700 !important;
+    color: var(--color-dark) !important;
+    margin: 0 0 12px 0 !important;
+}
+
+.wormhole-roadmap .attachments-list,
+.wormhole-roadmap .history-list {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 12px !important;
+}
+
+.wormhole-roadmap .attachment-item {
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+    padding: 12px 16px !important;
+    background: white !important;
+    border: 1px solid var(--color-grey-300) !important;
+    border-radius: 6px !important;
+}
+
+.wormhole-roadmap .file-icon {
+    font-size: 24px !important;
+    line-height: 1 !important;
+}
+
+.wormhole-roadmap .attachment-info {
+    flex: 1 !important;
+}
+
+.wormhole-roadmap .attachment-name {
+    display: block !important;
+    font-family: var(--font-sans) !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    color: var(--color-primary) !important;
+    text-decoration: none !important;
+    margin-bottom: 4px !important;
+}
+
+.wormhole-roadmap .attachment-name:hover {
+    text-decoration: underline !important;
+}
+
+.wormhole-roadmap .attachment-meta {
+    font-family: var(--font-sans) !important;
+    font-size: 12px !important;
+    color: var(--color-grey-600) !important;
+}
+
+.wormhole-roadmap .no-attachments,
+.wormhole-roadmap .no-history {
+    font-family: var(--font-sans) !important;
+    font-size: 14px !important;
+    font-style: italic !important;
+    color: var(--color-grey-600) !important;
+    padding: 16px !important;
+    background: white !important;
+    border: 1px dashed var(--color-grey-400) !important;
+    border-radius: 4px !important;
+    text-align: center !important;
+}
+
+/* Revision History Section */
+.wormhole-roadmap .journal-history {
+    margin-bottom: 0 !important;
+}
+
+.wormhole-roadmap .history-item {
+    padding: 16px !important;
+    background: white !important;
+    border: 1px solid var(--color-grey-300) !important;
+    border-radius: 6px !important;
+}
+
+.wormhole-roadmap .history-item.current-version {
+    border-color: var(--color-primary) !important;
+    border-width: 2px !important;
+}
+
+.wormhole-roadmap .history-header {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    margin-bottom: 8px !important;
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+}
+
+.wormhole-roadmap .history-header strong {
+    font-family: var(--font-sans) !important;
+    font-size: 14px !important;
+    font-weight: 700 !important;
+    color: var(--color-primary) !important;
+}
+
+.wormhole-roadmap .history-meta {
+    font-family: var(--font-sans) !important;
+    font-size: 12px !important;
+    color: var(--color-grey-600) !important;
+}
+
+.wormhole-roadmap .history-reason {
+    margin-bottom: 8px !important;
+    padding: 8px 12px !important;
+    background: var(--color-grey-100) !important;
+    border-left: 3px solid var(--color-primary) !important;
+    font-family: var(--font-sans) !important;
+    font-size: 13px !important;
+    color: var(--color-grey-700) !important;
+}
+
+.wormhole-roadmap .history-content {
+    font-family: var(--font-sans) !important;
+    font-size: 14px !important;
+    line-height: 1.6 !important;
+    color: var(--color-dark) !important;
+    white-space: pre-wrap !important;
+    word-wrap: break-word !important;
+}
+
+/* Mobile Responsive Adjustments */
+@media (max-width: 768px) {
+    .wormhole-roadmap .task-journal-panel {
+        padding: 16px !important;
+    }
+
+    .wormhole-roadmap .journal-actions {
+        flex-direction: column !important;
+    }
+
+    .wormhole-roadmap .button-save-note,
+    .wormhole-roadmap .button-attach-file {
+        width: 100% !important;
+        justify-content: center !important;
+    }
+
+    .wormhole-roadmap .history-header {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+    }
+
+    .wormhole-roadmap .journal-success {
+        margin-left: 0 !important;
+        margin-top: 8px !important;
+        display: block !important;
+        text-align: center !important;
+    }
+}

@@ -1,0 +1,21 @@
+{
+    "name": "prometheanlink/30-60-90-project-journey",
+    "description": "WordPress plugin to track 30/60/90 day roadmap progress with interactive checkboxes and PDF reports",
+    "type": "wordpress-plugin",
+    "license": "proprietary",
+    "authors": [
+        {
+            "name": "PrometheanLink",
+            "email": "contact@prometheanlink.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.4",
+        "mpdf/mpdf": "^8.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "PrometheanLink\\ProjectJourney\\": "includes/"
+        }
+    }
+}
