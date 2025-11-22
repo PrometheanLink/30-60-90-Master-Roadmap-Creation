@@ -29,6 +29,16 @@ $show_timeline = pj_get_project_meta($project_id, 'show_timeline_visual', 'yes')
 
 // Get all phases from database for dynamic timeline
 $all_phases = pj_get_all_phases($project_id);
+
+// Ensure purpose_points is always an array
+if (!is_array($purpose_points)) {
+    $purpose_points = array($purpose_points);
+}
+
+// Ensure all_phases is always an array (graceful fallback for empty database)
+if (!is_array($all_phases)) {
+    $all_phases = array();
+}
 ?>
 
 <div class="wormhole-roadmap" data-project-id="<?php echo esc_attr($project_id); ?>">
@@ -99,6 +109,75 @@ $all_phases = pj_get_all_phases($project_id);
     </section>
     <?php endif; ?>
 
+    <?php
+    // Load phases, objectives, and tasks from database
+    foreach ($all_phases as $phase):
+        $phase_id = $phase['id'];
+        $phase_number = $phase['phase_number'];
+        $phase_bg_class = 'phase-' . $phase_number . '-bg';
+
+        // Get objectives for this phase
+        $objectives = pj_get_objectives_by_phase($phase_id);
+        ?>
+
+        <!-- PHASE <?php echo esc_html($phase_number); ?> (Database-Driven) -->
+        <section class="<?php echo esc_attr($phase_bg_class); ?>">
+            <div class="container content-width">
+                <h2><?php echo esc_html($phase['phase_title']); ?></h2>
+                <p class="section-intro"><?php echo esc_html($phase['phase_subtitle']); ?></p>
+
+                <?php if (!empty($phase['phase_description'])):
+                    // Split description into bullet points if it contains line breaks
+                    $goals = array_filter(explode("\n", $phase['phase_description']));
+                    if (!empty($goals)):
+                ?>
+                <div class="goals-grid">
+                    <?php foreach ($goals as $goal): ?>
+                        <div class="goal-item">
+                            <p><?php echo esc_html(trim($goal)); ?></p>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+                <?php
+                    endif;
+                endif;
+
+                // Render each objective with its tasks
+                foreach ($objectives as $objective):
+                    $objective_id = $objective['id'];
+                    $objective_key = $objective['objective_key'];
+
+                    // Get tasks for this objective
+                    $db_tasks = pj_get_tasks_by_objective($objective_id);
+
+                    // Convert database tasks to format expected by pj_render_objective()
+                    $tasks_array = array();
+                    foreach ($db_tasks as $task) {
+                        $tasks_array[] = array(
+                            'text' => $task['task_text'],
+                            'owner' => !empty($task['owner']) ? $task['owner'] : 'both',
+                            'details' => !empty($task['task_details']) ? $task['task_details'] : null
+                        );
+                    }
+
+                    // Render the objective
+                    echo pj_render_objective(
+                        'phase' . $phase_number,
+                        $objective_key,
+                        $objective['objective_title'],
+                        $objective['objective_subtitle'],
+                        $tasks_array,
+                        $progress,
+                        $editable
+                    );
+                endforeach;
+                ?>
+            </div>
+        </section>
+    <?php endforeach; ?>
+
+    <?php /* OLD HARDCODED VERSION REMOVED - Now using database-driven display above */
+    /*
     <!-- PHASE 1 -->
     <section class="phase-1-bg">
         <div class="container content-width">
@@ -117,154 +196,7 @@ $all_phases = pj_get_all_phases($project_id);
                 </div>
             </div>
 
-            <?php echo pj_render_objective('phase1', 'A', 'Communication & Working Agreement', 'Establish a predictable way of working together', array(
-                array('text' => 'Decide preferred communication style (scheduled calls vs. flexible check-ins)', 'owner' => 'client'),
-                array('text' => 'Confirm primary communication channels (e.g. Zoom, email, text, shared folder, etc.)', 'owner' => 'both'),
-                array('text' => 'Agree on basic response time expectations (e.g. 24–48 hours on weekdays)', 'owner' => 'both'),
-                array('text' => 'Create and approve a simple Working Relationship / Accountability Agreement', 'owner' => 'both', 'details' => 'Consultant drafts, Client reviews & approves')
-            ), $progress, $editable); ?>
-
-            <?php echo pj_render_objective('phase1', 'B', 'Client Journey & Coaching Structure', 'Define how Sojourn Coaching clients move from first contact to transformation', array(
-                array('text' => 'Map the 8-week coaching arc (start → middle → completion)', 'owner' => 'both'),
-                array('text' => 'Define core stages of the client journey (e.g. Discovery → Intake → First Sessions → Midpoint Check-in → Completion & Next Steps)', 'owner' => 'both'),
-                array('text' => 'Outline first consultation structure (intake call flow, key questions)', 'owner' => 'both', 'details' => 'Client leads, Consultant supports'),
-                array('text' => 'Identify 2–3 primary outcomes clients should achieve by the end of 8 weeks', 'owner' => 'both', 'details' => 'Client identifies, Consultant refines wording'),
-                array('text' => 'Draft a simple visual coaching roadmap/diagram (even rough at first)', 'owner' => 'consultant', 'details' => 'Consultant drafts, Client reviews')
-            ), $progress, $editable); ?>
-
-            <?php echo pj_render_objective('phase1', 'C', 'Intake PDF & Client Onboarding', 'Create a branded intake experience to use once clients sign up', array(
-                array('text' => 'Client drafts raw intake questions/content (checkboxes, comment fields, reflection prompts)', 'owner' => 'client'),
-                array('text' => 'Consultant reviews and structures questions into sections (e.g. Background, Current Challenges, Goals, Boundaries)', 'owner' => 'consultant'),
-                array('text' => 'Consultant designs branded intake PDF (logo, fonts, colors, layout)', 'owner' => 'consultant'),
-                array('text' => 'Client reviews intake PDF and requests any revisions (up to agreed rounds)', 'owner' => 'client'),
-                array('text' => 'Final intake PDF saved in shared folder and linked in onboarding flow (email/site)', 'owner' => 'consultant')
-            ), $progress, $editable); ?>
-
-            <?php echo pj_render_objective('phase1', 'D', 'Website & Tech Foundations – Initial Setup', 'Stand up the core environment for Sojourn Coaching\'s online presence', array(
-                array('text' => 'Confirm final platform for main site (WordPress install location)', 'owner' => 'both', 'details' => 'Consultant, Client approval'),
-                array('text' => 'Confirm current domain and where it should point (e.g. sojourn-coaching.com → new host)', 'owner' => 'both', 'details' => 'Consultant, Client approval'),
-                array('text' => 'Point domain to new hosting and verify propagation', 'owner' => 'consultant'),
-                array('text' => 'Install and configure base WordPress theme and structure (Home, About, Work with Kim, Contact/Book, etc.)', 'owner' => 'consultant'),
-                array('text' => 'Create shared folder (e.g. Google Drive) for assets: photos, logo, headshots, brand elements', 'owner' => 'both', 'details' => 'Consultant creates, Client uploads content'),
-                array('text' => 'Client provides initial copy: About bio, why Sojourn, a few testimonials if available', 'owner' => 'client')
-            ), $progress, $editable); ?>
-
-            <?php echo pj_render_objective('phase1', 'E', '30/60/90 Master Roadmap Creation', 'Turn this plan into a living tracker for both parties', array(
-                array('text' => 'Consultant converts this document into a visual 30/60/90 roadmap (phases, milestones, checkboxes)', 'owner' => 'consultant', 'completed' => true),
-                array('text' => 'Roadmap uploaded to a private online space / dashboard for Client access', 'owner' => 'consultant'),
-                array('text' => 'Walkthrough of the roadmap on a call to confirm priorities and expectations', 'owner' => 'both')
-            ), $progress, $editable); ?>
-        </div>
-    </section>
-
-    <!-- PHASE 2 -->
-    <section class="phase-2-bg">
-        <div class="container content-width">
-            <h2>Phase 2: Days 31–60</h2>
-            <p class="section-intro">Website Build, Booking, Funnel & AI Support</p>
-
-            <div class="goals-grid">
-                <div class="goal-item">
-                    <p>Launch a professional website with integrated booking</p>
-                </div>
-                <div class="goal-item">
-                    <p>Set up a simple but effective lead funnel and welcome emails</p>
-                </div>
-                <div class="goal-item">
-                    <p>Introduce AI tools into Kim's workflow in a supportive, non-overwhelming way</p>
-                </div>
-            </div>
-
-            <?php echo pj_render_objective('phase2', 'A', 'Website Buildout (Core Pages Live)', 'Make Sojourn Coaching publicly presentable and aligned with the brand', array(
-                array('text' => 'Finalize site navigation (e.g. Home, Work with Kim, About, Testimonials, Book a Clarity Call, Resources/Videos, etc.)', 'owner' => 'both'),
-                array('text' => 'Build and style Home page with clear messaging and CTA (e.g. "Book a Clarity Call")', 'owner' => 'consultant'),
-                array('text' => 'Build Work with Kim page outlining offers, 8-week journey, and who it\'s for', 'owner' => 'both', 'details' => 'Consultant drafts, Client approves/refines wording'),
-                array('text' => 'Build About page with story, values, and credibility markers', 'owner' => 'both', 'details' => 'Consultant drafts, Client provides/refines bio and story'),
-                array('text' => 'Create Book a Clarity Call page (or modal) linking to booking system', 'owner' => 'consultant'),
-                array('text' => 'Connect intake PDF into the onboarding flow where appropriate (e.g. after booking or post-enrollment)', 'owner' => 'consultant')
-            ), $progress, $editable); ?>
-
-            <?php echo pj_render_objective('phase2', 'B', 'Booking & Scheduling System', 'Give prospects and clients a simple, clear way to book time with Kim', array(
-                array('text' => 'Choose scheduler platform (e.g. Calendly, SimplyBook, or preferred system)', 'owner' => 'both'),
-                array('text' => 'Set up availability blocks for Clarity Calls and Coaching Sessions', 'owner' => 'both', 'details' => 'Client, Consultant guidance'),
-                array('text' => 'Enable automated reminders and timezone handling', 'owner' => 'consultant'),
-                array('text' => 'Embed booking widget or link into "Book a Clarity Call" page and other strategic places on site', 'owner' => 'consultant'),
-                array('text' => 'Test end-to-end booking flow (visitor → booking → confirmation emails)', 'owner' => 'both')
-            ), $progress, $editable); ?>
-
-            <?php echo pj_render_objective('phase2', 'C', 'Funnel & Email Automation', 'Capture interested leads and nurture them into conversations or clients', array(
-                array('text' => 'Decide on lead magnet concept (e.g. mini-guide, checklist, reflection, Clarity & Confidence Index, short video)', 'owner' => 'both', 'details' => 'Client, Consultant supports format'),
-                array('text' => 'Draft content for the lead magnet (or outline for Consultant to polish)', 'owner' => 'both', 'details' => 'Client, Consultant refines'),
-                array('text' => 'Create Landing Page for lead magnet with clear promise and opt-in form', 'owner' => 'consultant'),
-                array('text' => 'Choose and configure email platform (e.g. MailerLite, ConvertKit, or similar)', 'owner' => 'both', 'details' => 'Consultant, Client approvals'),
-                array('text' => 'Build 3–5 email Welcome Sequence triggered on opt-in: 1) Welcome & story, 2) Value/insight/teaching, 3) Invitation to Clarity Call, (Optional) 4 & 5: Case study, FAQs, soft offer', 'owner' => 'both', 'details' => 'Consultant drafts, Client reviews & tweaks'),
-                array('text' => 'Integrate opt-in form with email platform and test the full flow', 'owner' => 'consultant')
-            ), $progress, $editable); ?>
-
-            <?php echo pj_render_objective('phase2', 'D', 'AI Support – Jumpstart & Workflow Integration', 'Help Kim confidently use AI tools to support content and communication', array(
-                array('text' => 'Identify core AI tools to use (e.g. ChatGPT for writing, image tools, avatar video intro if desired)', 'owner' => 'consultant'),
-                array('text' => 'Provide a small Prompt Pack tailored to Sojourn Coaching for: Client messaging (bios, intros, DMs), Content ideas (blogs, social posts, email subject lines), Simple scripting for short videos (reels/shorts)', 'owner' => 'consultant'),
-                array('text' => 'Conduct a short AI onboarding session (screen share) to walk through how Kim can safely and simply use these tools', 'owner' => 'both', 'details' => 'Consultant leads, Client participates'),
-                array('text' => 'Save prompts and workflows in a reference doc Kim can revisit', 'owner' => 'consultant')
-            ), $progress, $editable); ?>
-
-            <?php echo pj_render_objective('phase2', 'E', 'Video & Content Planning', 'Lay groundwork for a library of content Kim can grow over time', array(
-                array('text' => 'Decide whether to start with a private video area or go public (e.g. YouTube later)', 'owner' => 'both', 'details' => 'Client, Consultant input'),
-                array('text' => 'Outline 3–5 starter video topics (stories, teachings, reflections)', 'owner' => 'both', 'details' => 'Client brainstorming, Consultant structures'),
-                array('text' => 'Choose where early videos will live (site, unlisted links, private library, etc.)', 'owner' => 'both'),
-                array('text' => 'Document a simple repeatable flow: idea → outline → record → upload → publish/link on site', 'owner' => 'consultant')
-            ), $progress, $editable); ?>
-        </div>
-    </section>
-
-    <!-- PHASE 3 -->
-    <section class="phase-3-bg">
-        <div class="container content-width">
-            <h2>Phase 3: Days 61–90</h2>
-            <p class="section-intro">Refinement, Launch, and Momentum</p>
-
-            <div class="goals-grid">
-                <div class="goal-item">
-                    <p>Refine everything based on real feedback</p>
-                </div>
-                <div class="goal-item">
-                    <p>Prepare for public launch or re-launch of Sojourn Coaching</p>
-                </div>
-                <div class="goal-item">
-                    <p>Solidify content rhythm and client experience</p>
-                </div>
-            </div>
-
-            <?php echo pj_render_objective('phase3', 'A', 'Website & Funnel Refinement', 'Polish the experience now that the basics are live', array(
-                array('text' => 'Review analytics and feedback from early visitors (if available)', 'owner' => 'both', 'details' => 'Consultant gathers, Both review'),
-                array('text' => 'Adjust copy and layout on key pages (Home, Work with Kim, Book a Call) for clarity and conversions', 'owner' => 'both', 'details' => 'Consultant, Client approvals'),
-                array('text' => 'Refine any visual elements that feel off-brand or unclear', 'owner' => 'consultant'),
-                array('text' => 'Confirm all links, forms, and booking flows function reliably', 'owner' => 'consultant')
-            ), $progress, $editable); ?>
-
-            <?php echo pj_render_objective('phase3', 'B', 'Coaching System & Client Journey Finalization', 'Lock in a repeatable and confident client experience', array(
-                array('text' => 'Finalize 8-week coaching roadmap graphic/diagram and add to website and/or onboarding material', 'owner' => 'both', 'details' => 'Consultant creates, Client approves'),
-                array('text' => 'Standardize First Session format (how sessions begin, what\'s reviewed, expectations set)', 'owner' => 'both', 'details' => 'Client, Consultant documents'),
-                array('text' => 'Define simple check-in points (e.g. Week 4 midpoint review, final session recap and next steps)', 'owner' => 'both'),
-                array('text' => 'Create a short "How to Get the Most Out of Coaching with Kim" guide (text or video) for new clients', 'owner' => 'both', 'details' => 'Consultant drafts, Client finalizes tone')
-            ), $progress, $editable); ?>
-
-            <?php echo pj_render_objective('phase3', 'C', 'Social Presence & Launch Support', 'Create a lightweight but aligned presence on at least one platform', array(
-                array('text' => 'Decide primary platform (e.g. Instagram or LinkedIn) to focus on first', 'owner' => 'both', 'details' => 'Client, Consultant input'),
-                array('text' => 'Set or refine profile (photo, bio, link to Clarity Call/lead magnet)', 'owner' => 'both', 'details' => 'Consultant drafts, Client approves'),
-                array('text' => 'Provide 8–10 simple content prompts aligned to Sojourn Coaching themes', 'owner' => 'consultant'),
-                array('text' => 'Map out a realistic posting rhythm (e.g. 1–2x per week) that feels sustainable', 'owner' => 'both'),
-                array('text' => 'Announce or re-announce Sojourn Coaching publicly with a short, clear launch message', 'owner' => 'both', 'details' => 'Client, Consultant can help draft')
-            ), $progress, $editable); ?>
-
-            <?php echo pj_render_objective('phase3', 'D', 'Launch Review & Ongoing Rhythm', 'Close the 90-day buildout with clarity on what\'s next', array(
-                array('text' => 'Conduct a 90-day Launch Review Session (what\'s working, what feels heavy, what feels exciting)', 'owner' => 'both'),
-                array('text' => 'Decide what should become ongoing habits (weekly review, content creation block, system check)', 'owner' => 'both', 'details' => 'Client, Consultant suggests structure'),
-                array('text' => 'Identify 2–3 next-phase improvements (e.g. refine packages, add group program, build more content, expand video presence)', 'owner' => 'both'),
-                array('text' => 'Update the roadmap or create a follow-on 90-day plan based on what emerges', 'owner' => 'both', 'details' => 'Consultant drafts, Client approves')
-            ), $progress, $editable); ?>
-        </div>
-    </section>
+    */ ?>
 
     <!-- Summary Section -->
     <section>

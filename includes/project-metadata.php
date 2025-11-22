@@ -207,7 +207,7 @@ function pj_save_project_metadata_handler() {
     }
 
     $project_id = isset($_POST['project_id']) ? intval($_POST['project_id']) : 1;
-    $metadata = isset($_POST['metadata']) ? $_POST['metadata'] : array();
+    $metadata = isset($_POST['metadata']) ? wp_unslash($_POST['metadata']) : array();
 
     if (empty($metadata)) {
         wp_send_json_error(array('message' => 'No metadata provided'));

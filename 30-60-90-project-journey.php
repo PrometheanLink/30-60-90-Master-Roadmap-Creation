@@ -205,6 +205,16 @@ function pj_create_tables() {
     if (get_option('pj_notification_email') === false) {
         update_option('pj_notification_email', get_option('admin_email'));
     }
+
+    // Auto-import hardcoded roadmap if database is empty
+    if (!pj_roadmap_exists(1)) {
+        pj_import_hardcoded_roadmap(1);
+    }
+
+    // Auto-initialize default project metadata if not set
+    if (!pj_project_meta_exists(1)) {
+        pj_set_default_project_meta(1);
+    }
 }
 
 /**
@@ -298,7 +308,7 @@ function pj_add_admin_menu() {
         'Settings',
         'manage_options',
         'project-journey-settings',
-        'pj_admin_settings_page'
+        'pj_admin_project_settings_page'
     );
 
     add_submenu_page(

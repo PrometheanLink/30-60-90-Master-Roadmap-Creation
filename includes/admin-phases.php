@@ -685,13 +685,13 @@ function pj_save_task_handler() {
     $task_db_id = isset($_POST['task_db_id']) ? intval($_POST['task_db_id']) : 0;
     $data = array(
         'project_id' => isset($_POST['project_id']) ? intval($_POST['project_id']) : 1,
-        'phase_id' => $_POST['phase_id'],
-        'objective_id' => $_POST['objective_id'],
-        'task_id' => $_POST['task_id'],
-        'task_text' => $_POST['task_text'],
-        'task_details' => isset($_POST['task_details']) ? $_POST['task_details'] : '',
-        'owner' => isset($_POST['owner']) ? $_POST['owner'] : 'both',
-        'sort_order' => isset($_POST['sort_order']) ? $_POST['sort_order'] : 0
+        'phase_id' => isset($_POST['phase_id']) ? intval($_POST['phase_id']) : 0,
+        'objective_id' => isset($_POST['objective_id']) ? intval($_POST['objective_id']) : 0,
+        'task_id' => isset($_POST['task_id']) ? sanitize_text_field(wp_unslash($_POST['task_id'])) : '',
+        'task_text' => isset($_POST['task_text']) ? sanitize_textarea_field(wp_unslash($_POST['task_text'])) : '',
+        'task_details' => isset($_POST['task_details']) ? sanitize_textarea_field(wp_unslash($_POST['task_details'])) : '',
+        'owner' => isset($_POST['owner']) ? sanitize_text_field(wp_unslash($_POST['owner'])) : 'both',
+        'sort_order' => isset($_POST['sort_order']) ? intval($_POST['sort_order']) : 0
     );
 
     if ($task_db_id > 0) {

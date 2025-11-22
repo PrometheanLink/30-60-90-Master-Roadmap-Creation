@@ -8,27 +8,19 @@ if (!defined('ABSPATH')) exit;
 
 /**
  * Register admin menu for Project Settings
+ * Note: Menu registration moved to main plugin file to avoid conflicts
+ * This submenu is registered as "Settings" in the main admin menu
  */
-add_action('admin_menu', 'pj_add_project_settings_menu', 20);
-function pj_add_project_settings_menu() {
-    add_submenu_page(
-        'project-journey',
-        'Project Settings',
-        'Project Settings',
-        'manage_options',
-        'project-journey-project-settings',
-        'pj_admin_project_settings_page'
-    );
-}
 
 /**
  * Enqueue assets for Project Settings page
  */
 add_action('admin_enqueue_scripts', 'pj_enqueue_project_settings_assets');
 function pj_enqueue_project_settings_assets($hook) {
-    if ($hook === 'project-journey_page_project-journey-project-settings') {
+    if ($hook === 'project-journey_page_project-journey-settings') {
         wp_enqueue_style('pj-admin-project-settings-styles', PJ_PLUGIN_URL . 'assets/admin-project-settings.css', array(), PJ_VERSION);
-        wp_enqueue_script('pj-admin-project-settings-scripts', PJ_PLUGIN_URL . 'assets/admin-project-settings.js', array('jquery'), PJ_VERSION, true);
+        wp_enqueue_script('jquery-ui-sortable');
+        wp_enqueue_script('pj-admin-project-settings-scripts', PJ_PLUGIN_URL . 'assets/admin-project-settings.js', array('jquery', 'jquery-ui-sortable'), PJ_VERSION, true);
 
         wp_localize_script('pj-admin-project-settings-scripts', 'pjProjectSettings', array(
             'ajaxurl' => admin_url('admin-ajax.php'),

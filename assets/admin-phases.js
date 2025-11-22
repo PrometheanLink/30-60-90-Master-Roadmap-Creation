@@ -90,19 +90,27 @@
         $(document).on('click', '.pj-edit-phase', function(e) {
             e.stopPropagation();
             const phaseCard = $(this).closest('.pj-phase-card');
-            enableEditing(phaseCard.find('[contenteditable]'));
+            // Only edit direct children, not nested objectives/tasks
+            const $editableFields = phaseCard.children('.pj-phase-header').find('[contenteditable]');
+            enableEditing($editableFields);
         });
 
         $(document).on('click', '.pj-edit-objective', function(e) {
             e.stopPropagation();
             const objectiveCard = $(this).closest('.pj-objective-card');
-            enableEditing(objectiveCard.find('[contenteditable]'));
+            // Only edit objective fields, not nested tasks
+            const $editableFields = objectiveCard.children('.pj-objective-header').find('[contenteditable]');
+            enableEditing($editableFields);
         });
 
         $(document).on('click', '.pj-edit-task', function(e) {
             e.stopPropagation();
             const taskItem = $(this).closest('.pj-task-item');
-            enableEditing(taskItem.find('[contenteditable]'));
+            // Only edit this specific task
+            const $editableFields = taskItem.find('[contenteditable]').not(function() {
+                return $(this).closest('.pj-task-item').get(0) !== taskItem.get(0);
+            });
+            enableEditing($editableFields);
         });
 
         // Handle Enter key to save
@@ -112,13 +120,16 @@
                 $(this).blur();
             }
             if (e.key === 'Escape') {
-                cancelEditing($(this));
+                cancelEditing(editingElement);
             }
         });
 
         // Save on blur
         $(document).on('blur', '[contenteditable="true"]', function() {
-            saveInlineEdit($(this));
+            // Only save if this element is part of the currently editing set
+            if (editingElement && editingElement.filter(this).length > 0) {
+                saveInlineEdit($(this));
+            }
         });
     }
 
@@ -168,8 +179,28 @@
                          $container.data('objective-id') ? 'objective' : 'task';
         const itemId = $container.data('phase-id') || $container.data('objective-id') || $container.data('task-id');
 
+        // Build data object with correct ID field name for backend
+        const data = {};
+        if (itemType === 'phase') {
+            data.phase_id = itemId;
+        } else if (itemType === 'objective') {
+            data.objective_id = itemId;
+            // Objectives also need phase_id and objective_key
+            const $phaseCard = $container.closest('.pj-phase-card');
+            data.phase_id = $phaseCard.data('phase-id');
+            data.objective_key = $container.find('.pj-objective-letter').text().trim();
+        } else if (itemType === 'task') {
+            data.task_db_id = itemId;
+            // Tasks also need phase_id, objective_id, task_id, and owner
+            const $phaseCard = $container.closest('.pj-phase-card');
+            const $objectiveCard = $container.closest('.pj-objective-card');
+            data.phase_id = $phaseCard.data('phase-id');
+            data.objective_id = $objectiveCard.data('objective-id');
+            data.task_id = $container.find('.pj-task-id').text().trim();
+            data.owner = $container.find('.pj-task-owner').text().trim() || 'both';
+        }
+
         // Collect all editable fields in the container
-        const data = { id: itemId };
         $container.find('[contenteditable="true"]').each(function() {
             const field = $(this).data('field');
             data[field] = $(this).text().trim();
@@ -212,7 +243,12 @@
     function initButtons() {
         // Add Phase
         $(document).on('click', '#pj-add-phase', function() {
-            const phaseTitle = prompt('Enter phase title:', 'Phase 4: Days 91-120');
+            // Count existing phases to determine next phase number
+            const existingPhases = $('.pj-phase-card').length;
+            const nextPhaseNumber = existingPhases + 1;
+            const nextPhaseKey = 'phase' + nextPhaseNumber;
+
+            const phaseTitle = prompt('Enter phase title:', 'Phase ' + nextPhaseNumber + ': Days ' + ((nextPhaseNumber - 1) * 30 + 1) + '-' + (nextPhaseNumber * 30));
             if (!phaseTitle) return;
 
             const phaseSubtitle = prompt('Enter phase subtitle:', 'Extended Implementation');
@@ -225,6 +261,8 @@
                 data: {
                     action: 'pj_save_phase',
                     nonce: pjPhasesAjax.nonce,
+                    phase_key: nextPhaseKey,
+                    phase_number: nextPhaseNumber,
                     phase_title: phaseTitle,
                     phase_subtitle: phaseSubtitle,
                     phase_description: phaseDescription,
@@ -248,7 +286,13 @@
         // Add Objective
         $(document).on('click', '.pj-add-objective', function() {
             const phaseId = $(this).data('phase-id');
-            const objectiveTitle = prompt('Enter objective title:', 'Objective F: New Goal');
+            const $phaseCard = $(this).closest('.pj-phase-card');
+
+            // Count existing objectives in this phase to determine next letter
+            const existingObjectives = $phaseCard.find('.pj-objective-card').length;
+            const nextLetter = String.fromCharCode(65 + existingObjectives); // 65 = 'A'
+
+            const objectiveTitle = prompt('Enter objective title:', 'Objective ' + nextLetter + ': New Goal');
             if (!objectiveTitle) return;
 
             const objectiveSubtitle = prompt('Enter objective subtitle (optional):', '');
@@ -261,6 +305,7 @@
                     action: 'pj_save_objective',
                     nonce: pjPhasesAjax.nonce,
                     phase_id: phaseId,
+                    objective_key: nextLetter,
                     objective_title: objectiveTitle,
                     objective_subtitle: objectiveSubtitle,
                     project_id: 1
@@ -282,11 +327,21 @@
 
         // Add Task
         $(document).on('click', '.pj-add-task', function() {
-            const objectiveId = $(this).data('objective-id');
+            const $objectiveCard = $(this).closest('.pj-objective-card');
+            const $phaseCard = $(this).closest('.pj-phase-card');
+
+            const objectiveId = $objectiveCard.data('objective-id');
+            const phaseId = $phaseCard.data('phase-id');
+
             const taskText = prompt('Enter task text:', 'New task description');
             if (!taskText) return;
 
-            const owner = prompt('Enter task owner (optional, e.g. "Client", "Consultant"):', 'Client');
+            const ownerInput = prompt('Enter task owner (Client, Consultant, or Both):', 'Client');
+            // Normalize owner to lowercase to match CSS classes (owner-client, owner-consultant, owner-both)
+            const owner = ownerInput ? ownerInput.toLowerCase() : 'both';
+
+            // Generate unique task_id (timestamp-based to ensure uniqueness)
+            const taskId = 'task-' + Date.now();
 
             showLoading();
             $.ajax({
@@ -295,7 +350,9 @@
                 data: {
                     action: 'pj_save_task',
                     nonce: pjPhasesAjax.nonce,
+                    phase_id: phaseId,
                     objective_id: objectiveId,
+                    task_id: taskId,
                     task_text: taskText,
                     owner: owner,
                     project_id: 1
@@ -424,14 +481,23 @@
     function deleteItem(itemType, itemId) {
         showLoading();
 
+        // Map item type to correct parameter name expected by PHP handler
+        const paramName = {
+            'phase': 'phase_id',
+            'objective': 'objective_id',
+            'task': 'task_db_id'
+        }[itemType];
+
+        const ajaxData = {
+            action: 'pj_delete_' + itemType,
+            nonce: pjPhasesAjax.nonce
+        };
+        ajaxData[paramName] = itemId;
+
         $.ajax({
             url: pjPhasesAjax.ajaxurl,
             type: 'POST',
-            data: {
-                action: 'pj_delete_' + itemType,
-                nonce: pjPhasesAjax.nonce,
-                id: itemId
-            },
+            data: ajaxData,
             success: function(response) {
                 hideLoading();
                 if (response.success) {
